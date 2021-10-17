@@ -1,0 +1,11 @@
+# Do: pin all runtime dependencies in this spec with PEP 440 version specifiers
+name: edbscan-run-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python~=3.8.8
+  - pip~=20.2
+  - pip:
+      - scikit-learn~=1.0.0
+      - numpy~=1.21.2

@@ -1,0 +1,28 @@
+# Do not: include runtime dependencies in this spec
+name: edbscan-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - coloredlogs
+  - conda-merge
+  - invoke
+  - isort
+  - jupyterlab
+  - mamba
+  - matplotlib
+  - mypy
+  - pip
+  - pre-commit
+  - proselint
+  - pydantic
+  - pydocstyle
+  - safety
+  - shellcheck
+  - tqdm
+  - pip:
+      - birdseye
+      - black
+      - flake8
+      - portray
+      - scalene

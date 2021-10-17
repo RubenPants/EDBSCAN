@@ -1,0 +1,69 @@
+stages:
+  - build
+  - test
+
+# Base Docker build script.
+.docker:
+  image: docker:stable
+  services:
+    - docker:stable-dind
+  script:
+    - DOCKER_IMAGE_SHA=${DOCKER_IMAGE_SHA:-$(sha1sum Dockerfile environment*.yml | sha1sum | cut -c 1-8)}
+    - echo "CI_IMAGE_SHA=$DOCKER_IMAGE_SHA" >> .env
+    - |
+      echo -n $DOCKER_REGISTRY_PASSWORD | docker login --username $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
+      DOCKER_PUSH=${DOCKER_PUSH:-$(timeout 2s docker pull $DOCKER_IMAGE:$DOCKER_IMAGE_SHA >/dev/null 2>1 && echo $? || echo $?)}
+      if [ $DOCKER_PUSH -ne 1 ]; then
+        echo "$DOCKER_IMAGE:$DOCKER_IMAGE_SHA exists, skipping this job..."
+      else
+        DOCKER_BUILDKIT=1 docker build \
+          --build-arg BASE_IMAGE=$DOCKER_BASE_IMAGE \
+          --build-arg GITLAB_CI_TOKEN=$CI_JOB_TOKEN \
+          --build-arg ENVIRONMENT=$CI_ENVIRONMENT_NAME \
+          --build-arg SOURCE_BRANCH=$CI_COMMIT_REF_NAME \
+          --build-arg SOURCE_COMMIT=$CI_COMMIT_SHA \
+          --build-arg SOURCE_TIMESTAMP=$CI_COMMIT_TIMESTAMP \
+          --tag $DOCKER_IMAGE:$DOCKER_IMAGE_TAG \
+          --tag $DOCKER_IMAGE:$DOCKER_IMAGE_SHA \
+          --target $DOCKER_TARGET \
+          .
+        docker push $DOCKER_IMAGE:$DOCKER_IMAGE_TAG
+        docker push $DOCKER_IMAGE:$DOCKER_IMAGE_SHA
+      fi
+  artifacts:
+    reports:
+      dotenv: .env
+
+# Build CI Docker image.
+Build:
+  extends:
+    - .docker
+  stage: build
+  variables:
+    DOCKER_REGISTRY: $CI_REGISTRY
+    DOCKER_REGISTRY_USER: $CI_REGISTRY_USER
+    DOCKER_REGISTRY_PASSWORD: $CI_REGISTRY_PASSWORD
+    DOCKER_TARGET: ci-image
+    DOCKER_BASE_IMAGE: continuumio/miniconda3:4.8.2
+    DOCKER_IMAGE: $CI_REGISTRY_IMAGE/ci
+    DOCKER_IMAGE_TAG: latest
+
+# Lint and test the package.
+Test:
+  stage: test
+  image: $CI_REGISTRY_IMAGE/ci:$CI_IMAGE_SHA
+  cache:
+    key: $CI_JOB_STAGE
+    paths:
+      - .mypy_cache/
+      - .pytest_cache/
+  script:
+    - invoke lint
+    - invoke test
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
+  artifacts:
+    when: always
+    untracked: true
+    reports:
+      junit:
+        - reports/**/*.xml

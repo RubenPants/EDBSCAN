@@ -1,0 +1,20 @@
+{
+    "template": "git+ssh://git@gitlab.com/radix-ai/packages/pure-cookiecutter.git",
+    "commit": "fc35f8e7f04e744f5cfc3f16c33188b2080d59d1",
+    "context": {
+        "cookiecutter": {
+            "project_name": "EDBSCAN",
+            "project_description": "Enforced Density -Based Spatial Clustering of Applications with Noise.",
+            "package_version": "0.0.0",
+            "package_slug": "edbscan",
+            "package_slug_kebab": "edbscan",
+            "conda_env_dev": "edbscan-env",
+            "conda_env_run": "edbscan-run-env",
+            "gitlab_organization": "RubenPants",
+            "gitlab_project_path": "RubenPants/edbscan",
+            "environments": "",
+            "_template": "git+ssh://git@gitlab.com/radix-ai/packages/pure-cookiecutter.git"
+        }
+    },
+    "directory": null
+}
