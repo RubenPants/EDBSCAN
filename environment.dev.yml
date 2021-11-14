@@ -26,3 +26,4 @@ dependencies:
       - flake8
       - portray
       - scalene
+      - ipython-autotime~=0.3.1

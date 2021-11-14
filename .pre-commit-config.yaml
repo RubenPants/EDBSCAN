@@ -51,11 +51,6 @@ repos:
         language: system
         types: [python]
         exclude: "^tasks/"
-      - id: mypy
-        name: mypy
-        entry: mypy
-        language: system
-        types: [python]
       - id: pydocstyle
         name: pydocstyle
         entry: pydocstyle
@@ -66,6 +61,11 @@ repos:
         entry: env XDG_CONFIG_HOME=.vscode proselint
         language: system
         files: \.(md|rst)$
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        types: [python]
   - repo: https://github.com/radix-ai/auto-smart-commit
     rev: v1.0.2
     hooks:

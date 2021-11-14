@@ -11,7 +11,7 @@
             "conda_env_dev": "edbscan-env",
             "conda_env_run": "edbscan-run-env",
             "gitlab_organization": "RubenPants",
-            "gitlab_project_path": "RubenPants/edbscan",
+            "gitlab_project_path": "RubenPants/EDBSCAN",
             "environments": "",
             "_template": "git+ssh://git@gitlab.com/radix-ai/packages/pure-cookiecutter.git"
         }
