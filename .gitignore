@@ -81,3 +81,8 @@ notebooks/
 
 # Portray
 site/
+
+# Ignore compiled C-files
+*.c
+*.cpp
+*.so

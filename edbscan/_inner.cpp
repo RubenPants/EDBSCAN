@@ -2953,21 +2953,49 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
  *         if len(stack) == 0:
  *             idx = get_unlabeled(is_core=is_core, neighborhoods=neighborhoods, labels=labels)             # <<<<<<<<<<<<<<
  * 
- *             # Add to stack if a new cluster is found that does not lead to a conflict.
+ *             # Break if no unlabeled found
  */
       __pyx_v_idx = __pyx_f_7edbscan_6_inner_get_unlabeled(((PyArrayObject *)__pyx_v_is_core), ((PyArrayObject *)__pyx_v_neighborhoods), ((PyArrayObject *)__pyx_v_labels));
 
       /* "edbscan/_inner.pyx":134
  * 
- *             # Add to stack if a new cluster is found that does not lead to a conflict.
+ *             # Break if no unlabeled found
+ *             if idx == -1:             # <<<<<<<<<<<<<<
+ *                 break
+ * 
+ */
+      __pyx_t_6 = ((__pyx_v_idx == -1L) != 0);
+      if (__pyx_t_6) {
+
+        /* "edbscan/_inner.pyx":135
+ *             # Break if no unlabeled found
+ *             if idx == -1:
+ *                 break             # <<<<<<<<<<<<<<
+ * 
+ *             # Break if conflict found
+ */
+        goto __pyx_L7_break;
+
+        /* "edbscan/_inner.pyx":134
+ * 
+ *             # Break if no unlabeled found
+ *             if idx == -1:             # <<<<<<<<<<<<<<
+ *                 break
+ * 
+ */
+      }
+
+      /* "edbscan/_inner.pyx":138
+ * 
+ *             # Break if conflict found
  *             neighborhood = neighborhoods[idx]             # <<<<<<<<<<<<<<
- *             if idx >= 0 and not conflict(neighborhood=neighborhood, labels=labels):
- *                 labels[idx] = get_max_0(labels)
+ *             if conflict(neighborhood=neighborhood, labels=labels):
+ *                 break
  */
       __pyx_t_5 = __pyx_v_idx;
       __pyx_t_1 = (PyObject *) *__Pyx_BufPtrStrided1d(PyObject **, __pyx_pybuffernd_neighborhoods.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhoods.diminfo[0].strides);
       __Pyx_INCREF((PyObject*)__pyx_t_1);
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 134, __pyx_L1_error)
+      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 138, __pyx_L1_error)
       __pyx_t_9 = ((PyArrayObject *)__pyx_t_1);
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2984,73 +3012,61 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
           __pyx_t_10 = __pyx_t_11 = __pyx_t_12 = 0;
         }
         __pyx_pybuffernd_neighborhood.diminfo[0].strides = __pyx_pybuffernd_neighborhood.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_neighborhood.diminfo[0].shape = __pyx_pybuffernd_neighborhood.rcbuffer->pybuffer.shape[0];
-        if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 134, __pyx_L1_error)
+        if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 138, __pyx_L1_error)
       }
       __pyx_t_9 = 0;
       __Pyx_XDECREF_SET(__pyx_v_neighborhood, ((PyArrayObject *)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "edbscan/_inner.pyx":135
- *             # Add to stack if a new cluster is found that does not lead to a conflict.
+      /* "edbscan/_inner.pyx":139
+ *             # Break if conflict found
  *             neighborhood = neighborhoods[idx]
- *             if idx >= 0 and not conflict(neighborhood=neighborhood, labels=labels):             # <<<<<<<<<<<<<<
- *                 labels[idx] = get_max_0(labels)
- *                 stack.append(idx)
+ *             if conflict(neighborhood=neighborhood, labels=labels):             # <<<<<<<<<<<<<<
+ *                 break
+ * 
  */
-      __pyx_t_13 = ((__pyx_v_idx >= 0) != 0);
-      if (__pyx_t_13) {
-      } else {
-        __pyx_t_6 = __pyx_t_13;
-        goto __pyx_L10_bool_binop_done;
-      }
-      __pyx_t_13 = ((!(__pyx_f_7edbscan_6_inner_conflict(((PyArrayObject *)__pyx_v_neighborhood), ((PyArrayObject *)__pyx_v_labels)) != 0)) != 0);
-      __pyx_t_6 = __pyx_t_13;
-      __pyx_L10_bool_binop_done:;
+      __pyx_t_6 = (__pyx_f_7edbscan_6_inner_conflict(((PyArrayObject *)__pyx_v_neighborhood), ((PyArrayObject *)__pyx_v_labels)) != 0);
       if (__pyx_t_6) {
 
-        /* "edbscan/_inner.pyx":136
+        /* "edbscan/_inner.pyx":140
  *             neighborhood = neighborhoods[idx]
- *             if idx >= 0 and not conflict(neighborhood=neighborhood, labels=labels):
- *                 labels[idx] = get_max_0(labels)             # <<<<<<<<<<<<<<
- *                 stack.append(idx)
+ *             if conflict(neighborhood=neighborhood, labels=labels):
+ *                 break             # <<<<<<<<<<<<<<
+ * 
+ *             # Add to stack (new cluster found that doesn't lead to a conflict)
+ */
+        goto __pyx_L7_break;
+
+        /* "edbscan/_inner.pyx":139
+ *             # Break if conflict found
+ *             neighborhood = neighborhoods[idx]
+ *             if conflict(neighborhood=neighborhood, labels=labels):             # <<<<<<<<<<<<<<
+ *                 break
  * 
  */
-        __pyx_t_5 = __pyx_v_idx;
-        *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides) = __pyx_f_7edbscan_6_inner_get_max_0(((PyArrayObject *)__pyx_v_labels));
-
-        /* "edbscan/_inner.pyx":137
- *             if idx >= 0 and not conflict(neighborhood=neighborhood, labels=labels):
- *                 labels[idx] = get_max_0(labels)
- *                 stack.append(idx)             # <<<<<<<<<<<<<<
- * 
- *             # No unlabeled cluster left -> Break while-loop.
- */
-        __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_stack, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 137, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-        /* "edbscan/_inner.pyx":135
- *             # Add to stack if a new cluster is found that does not lead to a conflict.
- *             neighborhood = neighborhoods[idx]
- *             if idx >= 0 and not conflict(neighborhood=neighborhood, labels=labels):             # <<<<<<<<<<<<<<
- *                 labels[idx] = get_max_0(labels)
- *                 stack.append(idx)
- */
-        goto __pyx_L9;
       }
 
-      /* "edbscan/_inner.pyx":141
- *             # No unlabeled cluster left -> Break while-loop.
- *             else:
- *                 break             # <<<<<<<<<<<<<<
+      /* "edbscan/_inner.pyx":143
+ * 
+ *             # Add to stack (new cluster found that doesn't lead to a conflict)
+ *             labels[idx] = get_max_0(labels)             # <<<<<<<<<<<<<<
+ *             stack.append(idx)
+ * 
+ */
+      __pyx_t_5 = __pyx_v_idx;
+      *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides) = __pyx_f_7edbscan_6_inner_get_max_0(((PyArrayObject *)__pyx_v_labels));
+
+      /* "edbscan/_inner.pyx":144
+ *             # Add to stack (new cluster found that doesn't lead to a conflict)
+ *             labels[idx] = get_max_0(labels)
+ *             stack.append(idx)             # <<<<<<<<<<<<<<
  * 
  *         # Pop the most dense index in stack and expand if there's no conflict.
  */
-      /*else*/ {
-        goto __pyx_L7_break;
-      }
-      __pyx_L9:;
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_stack, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 144, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
       /* "edbscan/_inner.pyx":130
  *     # Non-core points are labeled as part of a component, but don't expand their neighborhoods.
@@ -3061,7 +3077,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
  */
     }
 
-    /* "edbscan/_inner.pyx":145
+    /* "edbscan/_inner.pyx":148
  *         # Pop the most dense index in stack and expand if there's no conflict.
  *         # Only add unlabeled core indices to the stack.
  *         idx = pop(stack=stack, neighborhoods=neighborhoods)             # <<<<<<<<<<<<<<
@@ -3070,7 +3086,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
  */
     __pyx_v_idx = __pyx_f_7edbscan_6_inner_pop(__pyx_v_stack, ((PyArrayObject *)__pyx_v_neighborhoods));
 
-    /* "edbscan/_inner.pyx":146
+    /* "edbscan/_inner.pyx":149
  *         # Only add unlabeled core indices to the stack.
  *         idx = pop(stack=stack, neighborhoods=neighborhoods)
  *         neighborhood = neighborhoods[idx]             # <<<<<<<<<<<<<<
@@ -3080,7 +3096,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
     __pyx_t_5 = __pyx_v_idx;
     __pyx_t_1 = (PyObject *) *__Pyx_BufPtrStrided1d(PyObject **, __pyx_pybuffernd_neighborhoods.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhoods.diminfo[0].strides);
     __Pyx_INCREF((PyObject*)__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 146, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 149, __pyx_L1_error)
     __pyx_t_9 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3097,13 +3113,13 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
         __pyx_t_12 = __pyx_t_11 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_neighborhood.diminfo[0].strides = __pyx_pybuffernd_neighborhood.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_neighborhood.diminfo[0].shape = __pyx_pybuffernd_neighborhood.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 146, __pyx_L1_error)
+      if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 149, __pyx_L1_error)
     }
     __pyx_t_9 = 0;
     __Pyx_XDECREF_SET(__pyx_v_neighborhood, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "edbscan/_inner.pyx":147
+    /* "edbscan/_inner.pyx":150
  *         idx = pop(stack=stack, neighborhoods=neighborhoods)
  *         neighborhood = neighborhoods[idx]
  *         if not conflict(neighborhood=neighborhood, labels=labels):             # <<<<<<<<<<<<<<
@@ -3113,7 +3129,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
     __pyx_t_6 = ((!(__pyx_f_7edbscan_6_inner_conflict(((PyArrayObject *)__pyx_v_neighborhood), ((PyArrayObject *)__pyx_v_labels)) != 0)) != 0);
     if (__pyx_t_6) {
 
-      /* "edbscan/_inner.pyx":148
+      /* "edbscan/_inner.pyx":151
  *         neighborhood = neighborhoods[idx]
  *         if not conflict(neighborhood=neighborhood, labels=labels):
  *             for i in xrange(neighborhood.shape[0]):             # <<<<<<<<<<<<<<
@@ -3125,7 +3141,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
       for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
         __pyx_v_i = __pyx_t_4;
 
-        /* "edbscan/_inner.pyx":149
+        /* "edbscan/_inner.pyx":152
  *         if not conflict(neighborhood=neighborhood, labels=labels):
  *             for i in xrange(neighborhood.shape[0]):
  *                 n_idx = neighborhood[i]             # <<<<<<<<<<<<<<
@@ -3135,7 +3151,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
         __pyx_t_5 = __pyx_v_i;
         __pyx_v_n_idx = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_neighborhood.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhood.diminfo[0].strides));
 
-        /* "edbscan/_inner.pyx":150
+        /* "edbscan/_inner.pyx":153
  *             for i in xrange(neighborhood.shape[0]):
  *                 n_idx = neighborhood[i]
  *                 if labels[n_idx] == -2 and is_core[n_idx]:             # <<<<<<<<<<<<<<
@@ -3147,15 +3163,15 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
         if (__pyx_t_13) {
         } else {
           __pyx_t_6 = __pyx_t_13;
-          goto __pyx_L16_bool_binop_done;
+          goto __pyx_L15_bool_binop_done;
         }
         __pyx_t_5 = __pyx_v_n_idx;
         __pyx_t_13 = ((*__Pyx_BufPtrCContig1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_is_core.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_is_core.diminfo[0].strides)) != 0);
         __pyx_t_6 = __pyx_t_13;
-        __pyx_L16_bool_binop_done:;
+        __pyx_L15_bool_binop_done:;
         if (__pyx_t_6) {
 
-          /* "edbscan/_inner.pyx":151
+          /* "edbscan/_inner.pyx":154
  *                 n_idx = neighborhood[i]
  *                 if labels[n_idx] == -2 and is_core[n_idx]:
  *                     labels[n_idx] = labels[idx]             # <<<<<<<<<<<<<<
@@ -3165,17 +3181,17 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
           __pyx_t_14 = __pyx_v_n_idx;
           *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_labels.diminfo[0].strides) = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides));
 
-          /* "edbscan/_inner.pyx":152
+          /* "edbscan/_inner.pyx":155
  *                 if labels[n_idx] == -2 and is_core[n_idx]:
  *                     labels[n_idx] = labels[idx]
  *                     stack.append(n_idx)             # <<<<<<<<<<<<<<
  */
-          __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_n_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_n_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_stack, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 152, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_stack, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "edbscan/_inner.pyx":150
+          /* "edbscan/_inner.pyx":153
  *             for i in xrange(neighborhood.shape[0]):
  *                 n_idx = neighborhood[i]
  *                 if labels[n_idx] == -2 and is_core[n_idx]:             # <<<<<<<<<<<<<<
@@ -3185,7 +3201,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
         }
       }
 
-      /* "edbscan/_inner.pyx":147
+      /* "edbscan/_inner.pyx":150
  *         idx = pop(stack=stack, neighborhoods=neighborhoods)
  *         neighborhood = neighborhoods[idx]
  *         if not conflict(neighborhood=neighborhood, labels=labels):             # <<<<<<<<<<<<<<

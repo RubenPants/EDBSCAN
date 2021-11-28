@@ -5,6 +5,7 @@ from distutils.core import Extension, setup
 import numpy as np
 from Cython.Build import cythonize
 
+# TODO: Merge this in the other setup
 if __name__ == "__main__":
     ext = Extension(
         "edbscan._inner",

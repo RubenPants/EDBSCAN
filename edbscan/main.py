@@ -23,8 +23,8 @@ NoneType = type(None)
 
 
 def edbscan(
-    X: NDArray[NDArray[float]],
-    y: Optional[NDArray[Optional[int]]] = None,
+    X: NDArray[NDArray[np.float64]],
+    y: Optional[NDArray[Optional[np.int8]]] = None,
     eps: float = 0.5,
     *,
     min_samples: int = 5,
@@ -33,9 +33,9 @@ def edbscan(
     algorithm: str = "auto",
     leaf_size: int = 30,
     p: int = 2,
-    sample_weight: Optional[NDArray[float]] = None,
+    sample_weight: Optional[NDArray[np.float64]] = None,
     n_jobs: Optional[int] = None,
-) -> Tuple[NDArray[int], NDArray[int]]:
+) -> Tuple[NDArray[np.int8], NDArray[np.int8]]:
     """
     Perform EDBSCAN clustering from vector array or distance matrix.
 
@@ -285,15 +285,15 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
         self.n_jobs = n_jobs
 
         # Hidden variables
-        self.components_: Optional[NDArray[NDArray[float]]] = None
-        self.core_sample_indices_: Optional[NDArray[int]] = None
-        self.labels_: Optional[NDArray[int]] = None
+        self.components_: Optional[NDArray[NDArray[np.float64]]] = None
+        self.core_sample_indices_: Optional[NDArray[np.int8]] = None
+        self.labels_: Optional[NDArray[np.int8]] = None
 
     def fit(  # noqa: C901
         self,
-        X: NDArray[NDArray[float]],
-        y: Optional[NDArray[Optional[int]]] = None,
-        sample_weight: Optional[NDArray[float]] = None,
+        X: NDArray[NDArray[np.float64]],
+        y: Optional[NDArray[Optional[np.int8]]] = None,
+        sample_weight: Optional[NDArray[np.float64]] = None,
     ) -> EDBSCAN:
         """Perform DBSCAN clustering from features, or distance matrix.
 
@@ -363,7 +363,7 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
         # This has worst case O(n^2) memory complexity
         neighborhoods = neighbors_model.radius_neighbors(X, return_distance=False)
 
-        def _is_conflict(neighborhood: NDArray[int]) -> bool:
+        def _is_conflict(neighborhood: NDArray[np.int8]) -> bool:
             """
             Check if the neighborhood is in conflict.
 
@@ -381,7 +381,7 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
             """
             return len({c for c in y[neighborhood] if c is not None}) > 1  # type: ignore
 
-        def _filter_conflict(label: int, neighborhood: NDArray[int]) -> NDArray[int]:
+        def _filter_conflict(label: int, neighborhood: NDArray[np.int8]) -> NDArray[np.int8]:
             """
             Filter out the conflicting indices from the given neighborhood.
 
@@ -443,10 +443,10 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
 
     def fit_predict(
         self,
-        X: NDArray[NDArray[float]],
-        y: Optional[NDArray[Optional[int]]] = None,
-        sample_weight: Optional[NDArray[float]] = None,
-    ) -> NDArray[int]:
+        X: NDArray[NDArray[np.float64]],
+        y: Optional[NDArray[Optional[np.int8]]] = None,
+        sample_weight: Optional[NDArray[np.float64]] = None,
+    ) -> NDArray[np.int8]:
         """Compute clusters from a data or distance matrix and predict labels.
 
         Parameters
@@ -477,23 +477,23 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
         assert labels is not None
         return labels
 
-    def get_components(self) -> NDArray[NDArray[float]]:
+    def get_components(self) -> NDArray[NDArray[np.float64]]:
         """Get the components."""
         assert self.components_ is not None
         return self.components_
 
-    def get_core_sample_indices(self) -> NDArray[int]:
+    def get_core_sample_indices(self) -> NDArray[np.int8]:
         """Get the core sample indices."""
         assert self.core_sample_indices_ is not None
         return self.core_sample_indices_
 
-    def get_labels(self) -> NDArray[int]:
+    def get_labels(self) -> NDArray[np.int8]:
         """Get the predicted labels."""
         assert self.labels_ is not None
         return self.labels_
 
 
-def _evaluate_known_clusters(known: NDArray[Optional[int]]) -> None:
+def _evaluate_known_clusters(known: NDArray[Optional[np.int8]]) -> None:
     """Evaluate the known clusters and throw a suiting exception if necessary."""
     # Known has to be a 1-dimensional vector
     if len(known.shape) != 1:

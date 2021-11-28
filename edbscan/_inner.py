@@ -3,12 +3,13 @@
 from logging import warning
 from typing import List
 
+import numpy as np
 from numpy.typing import NDArray
 
 
 def pop(
     stack: List[int],
-    neighborhoods: NDArray[NDArray[int]],
+    neighborhoods: NDArray[NDArray[np.int8]],
 ) -> int:
     """Pop index from stack with the highest density, calculated as number of neighbors."""
     best_size, best_idx = -1, -1
@@ -23,9 +24,9 @@ def pop(
 
 
 def get_unlabeled(
-    is_core: NDArray[int],
-    neighborhoods: NDArray[NDArray[int]],
-    labels: NDArray[int],
+    is_core: NDArray[np.int8],
+    neighborhoods: NDArray[NDArray[np.int8]],
+    labels: NDArray[np.int8],
 ) -> int:
     """Get the best unlabeled core index."""
     best_size, best_idx = -1, -1
@@ -43,8 +44,8 @@ def get_unlabeled(
 
 
 def conflict(
-    neighborhood: NDArray[int],
-    labels: NDArray[int],
+    neighborhood: NDArray[np.int8],
+    labels: NDArray[np.int8],
 ) -> bool:
     """Check if there's a conflict in the given neighborhood."""
     neighborhood_labels = {label for label in labels[neighborhood] if label != -2}
@@ -58,9 +59,9 @@ def conflict(
 
 
 def inner(
-    is_core: NDArray[int],
-    neighborhoods: NDArray[NDArray[int]],
-    labels: NDArray[int],
+    is_core: NDArray[np.int8],
+    neighborhoods: NDArray[NDArray[np.int8]],
+    labels: NDArray[np.int8],
 ) -> None:
     """Inner-loop of the EDBSCAN algorithm."""
     warning("RUNNING PYTHON LOOP, PLEASE USE C++ OPTIMISED LOOP INSTEAD")
@@ -78,14 +79,18 @@ def inner(
         if len(stack) == 0:
             idx = get_unlabeled(is_core=is_core, neighborhoods=neighborhoods, labels=labels)
 
-            # Add to stack if a new cluster is found that does not lead to a conflict.
-            if idx >= 0 and not conflict(neighborhood=neighborhoods[idx], labels=labels):
-                labels[idx] = max(max(labels) + 1, 0)
-                stack.append(idx)
-
-            # No unlabeled cluster left -> Break while-loop.
-            else:
+            # Break if no unlabeled found
+            if idx == -1:
                 break
+
+            # Break if conflict found
+            neighborhood = neighborhoods[idx]
+            if conflict(neighborhood=neighborhood, labels=labels):
+                break
+
+            # Add to stack (new cluster found that doesn't lead to a conflict)
+            labels[idx] = max(max(labels) + 1, 0)
+            stack.append(idx)
 
         # Pop the most dense index in stack and expand if there's no conflict.
         # Only add unlabeled core indices to the stack.

@@ -58,7 +58,7 @@ cdef int get_unlabeled(
         if neighborhood.shape[0] > best_size:
             best_size = neighborhood.shape[0]
             best_idx = idx
-    
+
     # Pop the best index from the stack.
     return best_idx
 
@@ -118,7 +118,7 @@ cpdef void inner(
     cdef int i, idx, n_idx
     cdef list stack = []
     cdef np.ndarray[np.npy_intp, ndim=1, mode='c'] neighborhood
-    
+
     for idx in xrange(labels.shape[0]):
         if labels[idx] >= 0:
             stack.append(idx)
@@ -129,17 +129,20 @@ cpdef void inner(
     while True:
         if len(stack) == 0:
             idx = get_unlabeled(is_core=is_core, neighborhoods=neighborhoods, labels=labels)
-            
-            # Add to stack if a new cluster is found that does not lead to a conflict.
-            neighborhood = neighborhoods[idx]
-            if idx >= 0 and not conflict(neighborhood=neighborhood, labels=labels):
-                labels[idx] = get_max_0(labels)
-                stack.append(idx)
-            
-            # No unlabeled cluster left -> Break while-loop.
-            else:
+
+            # Break if no unlabeled found
+            if idx == -1:
                 break
-        
+
+            # Break if conflict found
+            neighborhood = neighborhoods[idx]
+            if conflict(neighborhood=neighborhood, labels=labels):
+                break
+
+            # Add to stack (new cluster found that doesn't lead to a conflict)
+            labels[idx] = get_max_0(labels)
+            stack.append(idx)
+
         # Pop the most dense index in stack and expand if there's no conflict.
         # Only add unlabeled core indices to the stack.
         idx = pop(stack=stack, neighborhoods=neighborhoods)

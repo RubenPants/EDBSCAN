@@ -30,7 +30,7 @@ def test(c):
 @task
 def lab(c):
     """Run Jupyter Lab."""
-    notebooks_path = os.path.join(REPO_PATH, "notebooks")
+    notebooks_path = os.path.join(REPO_PATH, "examples")
     os.makedirs(notebooks_path, exist_ok=True)
     with c.cd(notebooks_path):
         c.run("jupyter lab --allow-root", pty=True)

@@ -1196,12 +1196,21 @@ static PyObject *__pyx_pf_7edbscan_6_inner_inner(CYTHON_UNUSED PyObject *__pyx_s
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">131</span>:             <span class="n">idx</span> <span class="o">=</span> <span class="n">get_unlabeled</span><span class="p">(</span><span class="n">is_core</span><span class="o">=</span><span class="n">is_core</span><span class="p">,</span> <span class="n">neighborhoods</span><span class="o">=</span><span class="n">neighborhoods</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span></pre>
 <pre class='cython code score-0 '>      __pyx_v_idx = __pyx_f_7edbscan_6_inner_get_unlabeled(((PyArrayObject *)__pyx_v_is_core), ((PyArrayObject *)__pyx_v_neighborhoods), ((PyArrayObject *)__pyx_v_labels));
 </pre><pre class="cython line score-0">&#xA0;<span class="">132</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">133</span>:             <span class="c"># Add to stack if a new cluster is found that does not lead to a conflict.</span></pre>
-<pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">134</span>:             <span class="n">neighborhood</span> <span class="o">=</span> <span class="n">neighborhoods</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
+<pre class="cython line score-0">&#xA0;<span class="">133</span>:             <span class="c"># Break if no unlabeled found</span></pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">134</span>:             <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mf">1</span><span class="p">:</span></pre>
+<pre class='cython code score-0 '>      __pyx_t_6 = ((__pyx_v_idx == -1L) != 0);
+      if (__pyx_t_6) {
+/* … */
+      }
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">135</span>:                 <span class="k">break</span></pre>
+<pre class='cython code score-0 '>        goto __pyx_L7_break;
+</pre><pre class="cython line score-0">&#xA0;<span class="">136</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">137</span>:             <span class="c"># Break if conflict found</span></pre>
+<pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">138</span>:             <span class="n">neighborhood</span> <span class="o">=</span> <span class="n">neighborhoods</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
 <pre class='cython code score-22 '>      __pyx_t_5 = __pyx_v_idx;
       __pyx_t_1 = (PyObject *) *__Pyx_BufPtrStrided1d(PyObject **, __pyx_pybuffernd_neighborhoods.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhoods.diminfo[0].strides);
       <span class='pyx_macro_api'>__Pyx_INCREF</span>((PyObject*)__pyx_t_1);
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) <span class='error_goto'>__PYX_ERR(0, 134, __pyx_L1_error)</span>
+      if (!(likely(((__pyx_t_1) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) <span class='error_goto'>__PYX_ERR(0, 138, __pyx_L1_error)</span>
       __pyx_t_9 = ((PyArrayObject *)__pyx_t_1);
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -1218,51 +1227,38 @@ static PyObject *__pyx_pf_7edbscan_6_inner_inner(CYTHON_UNUSED PyObject *__pyx_s
           __pyx_t_10 = __pyx_t_11 = __pyx_t_12 = 0;
         }
         __pyx_pybuffernd_neighborhood.diminfo[0].strides = __pyx_pybuffernd_neighborhood.rcbuffer-&gt;pybuffer.strides[0]; __pyx_pybuffernd_neighborhood.diminfo[0].shape = __pyx_pybuffernd_neighborhood.rcbuffer-&gt;pybuffer.shape[0];
-        if (unlikely(__pyx_t_4 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 134, __pyx_L1_error)</span>
+        if (unlikely(__pyx_t_4 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 138, __pyx_L1_error)</span>
       }
       __pyx_t_9 = 0;
       <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_neighborhood, ((PyArrayObject *)__pyx_t_1));
       __pyx_t_1 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">135</span>:             <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mf">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">conflict</span><span class="p">(</span><span class="n">neighborhood</span><span class="o">=</span><span class="n">neighborhood</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">):</span></pre>
-<pre class='cython code score-0 '>      __pyx_t_13 = ((__pyx_v_idx &gt;= 0) != 0);
-      if (__pyx_t_13) {
-      } else {
-        __pyx_t_6 = __pyx_t_13;
-        goto __pyx_L10_bool_binop_done;
-      }
-      __pyx_t_13 = ((!(__pyx_f_7edbscan_6_inner_conflict(((PyArrayObject *)__pyx_v_neighborhood), ((PyArrayObject *)__pyx_v_labels)) != 0)) != 0);
-      __pyx_t_6 = __pyx_t_13;
-      __pyx_L10_bool_binop_done:;
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">139</span>:             <span class="k">if</span> <span class="n">conflict</span><span class="p">(</span><span class="n">neighborhood</span><span class="o">=</span><span class="n">neighborhood</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">):</span></pre>
+<pre class='cython code score-0 '>      __pyx_t_6 = (__pyx_f_7edbscan_6_inner_conflict(((PyArrayObject *)__pyx_v_neighborhood), ((PyArrayObject *)__pyx_v_labels)) != 0);
       if (__pyx_t_6) {
 /* … */
-        goto __pyx_L9;
       }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">136</span>:                 <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_max_0</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span></pre>
-<pre class='cython code score-0 '>        __pyx_t_5 = __pyx_v_idx;
-        *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides) = __pyx_f_7edbscan_6_inner_get_max_0(((PyArrayObject *)__pyx_v_labels));
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">137</span>:                 <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></pre>
-<pre class='cython code score-5 '>        __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_idx);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)</span>
-        <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-        __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_stack, __pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 137, __pyx_L1_error)</span>
-        <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">138</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">139</span>:             <span class="c"># No unlabeled cluster left -&gt; Break while-loop.</span></pre>
-<pre class="cython line score-0">&#xA0;<span class="">140</span>:             <span class="k">else</span><span class="p">:</span></pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">141</span>:                 <span class="k">break</span></pre>
-<pre class='cython code score-0 '>      /*else*/ {
-        goto __pyx_L7_break;
-      }
-      __pyx_L9:;
-</pre><pre class="cython line score-0">&#xA0;<span class="">142</span>: </pre>
-<pre class="cython line score-0">&#xA0;<span class="">143</span>:         <span class="c"># Pop the most dense index in stack and expand if there&#39;s no conflict.</span></pre>
-<pre class="cython line score-0">&#xA0;<span class="">144</span>:         <span class="c"># Only add unlabeled core indices to the stack.</span></pre>
-<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">145</span>:         <span class="n">idx</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">stack</span><span class="o">=</span><span class="n">stack</span><span class="p">,</span> <span class="n">neighborhoods</span><span class="o">=</span><span class="n">neighborhoods</span><span class="p">)</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">140</span>:                 <span class="k">break</span></pre>
+<pre class='cython code score-0 '>        goto __pyx_L7_break;
+</pre><pre class="cython line score-0">&#xA0;<span class="">141</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">142</span>:             <span class="c"># Add to stack (new cluster found that doesn&#39;t lead to a conflict)</span></pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">143</span>:             <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_max_0</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span></pre>
+<pre class='cython code score-0 '>      __pyx_t_5 = __pyx_v_idx;
+      *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides) = __pyx_f_7edbscan_6_inner_get_max_0(((PyArrayObject *)__pyx_v_labels));
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">144</span>:             <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></pre>
+<pre class='cython code score-5 '>      __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_idx);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)</span>
+      <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
+      __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_stack, __pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 144, __pyx_L1_error)</span>
+      <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
+</pre><pre class="cython line score-0">&#xA0;<span class="">145</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">146</span>:         <span class="c"># Pop the most dense index in stack and expand if there&#39;s no conflict.</span></pre>
+<pre class="cython line score-0">&#xA0;<span class="">147</span>:         <span class="c"># Only add unlabeled core indices to the stack.</span></pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">148</span>:         <span class="n">idx</span> <span class="o">=</span> <span class="n">pop</span><span class="p">(</span><span class="n">stack</span><span class="o">=</span><span class="n">stack</span><span class="p">,</span> <span class="n">neighborhoods</span><span class="o">=</span><span class="n">neighborhoods</span><span class="p">)</span></pre>
 <pre class='cython code score-0 '>    __pyx_v_idx = __pyx_f_7edbscan_6_inner_pop(__pyx_v_stack, ((PyArrayObject *)__pyx_v_neighborhoods));
-</pre><pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">146</span>:         <span class="n">neighborhood</span> <span class="o">=</span> <span class="n">neighborhoods</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
+</pre><pre class="cython line score-22" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">149</span>:         <span class="n">neighborhood</span> <span class="o">=</span> <span class="n">neighborhoods</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
 <pre class='cython code score-22 '>    __pyx_t_5 = __pyx_v_idx;
     __pyx_t_1 = (PyObject *) *__Pyx_BufPtrStrided1d(PyObject **, __pyx_pybuffernd_neighborhoods.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhoods.diminfo[0].strides);
     <span class='pyx_macro_api'>__Pyx_INCREF</span>((PyObject*)__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) <span class='error_goto'>__PYX_ERR(0, 146, __pyx_L1_error)</span>
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) <span class='error_goto'>__PYX_ERR(0, 149, __pyx_L1_error)</span>
     __pyx_t_9 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -1279,49 +1275,49 @@ static PyObject *__pyx_pf_7edbscan_6_inner_inner(CYTHON_UNUSED PyObject *__pyx_s
         __pyx_t_12 = __pyx_t_11 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_neighborhood.diminfo[0].strides = __pyx_pybuffernd_neighborhood.rcbuffer-&gt;pybuffer.strides[0]; __pyx_pybuffernd_neighborhood.diminfo[0].shape = __pyx_pybuffernd_neighborhood.rcbuffer-&gt;pybuffer.shape[0];
-      if (unlikely(__pyx_t_4 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 146, __pyx_L1_error)</span>
+      if (unlikely(__pyx_t_4 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 149, __pyx_L1_error)</span>
     }
     __pyx_t_9 = 0;
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_neighborhood, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">147</span>:         <span class="k">if</span> <span class="ow">not</span> <span class="n">conflict</span><span class="p">(</span><span class="n">neighborhood</span><span class="o">=</span><span class="n">neighborhood</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">):</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">150</span>:         <span class="k">if</span> <span class="ow">not</span> <span class="n">conflict</span><span class="p">(</span><span class="n">neighborhood</span><span class="o">=</span><span class="n">neighborhood</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">):</span></pre>
 <pre class='cython code score-0 '>    __pyx_t_6 = ((!(__pyx_f_7edbscan_6_inner_conflict(((PyArrayObject *)__pyx_v_neighborhood), ((PyArrayObject *)__pyx_v_labels)) != 0)) != 0);
     if (__pyx_t_6) {
 /* … */
     }
   }
   __pyx_L7_break:;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">148</span>:             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">neighborhood</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">]):</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">151</span>:             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">neighborhood</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">]):</span></pre>
 <pre class='cython code score-0 '>      __pyx_t_2 = (__pyx_v_neighborhood-&gt;dimensions[0]);
       __pyx_t_3 = __pyx_t_2;
       for (__pyx_t_4 = 0; __pyx_t_4 &lt; __pyx_t_3; __pyx_t_4+=1) {
         __pyx_v_i = __pyx_t_4;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">149</span>:                 <span class="n">n_idx</span> <span class="o">=</span> <span class="n">neighborhood</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">152</span>:                 <span class="n">n_idx</span> <span class="o">=</span> <span class="n">neighborhood</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></pre>
 <pre class='cython code score-0 '>        __pyx_t_5 = __pyx_v_i;
         __pyx_v_n_idx = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_neighborhood.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhood.diminfo[0].strides));
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">150</span>:                 <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2</span> <span class="ow">and</span> <span class="n">is_core</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]:</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">153</span>:                 <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2</span> <span class="ow">and</span> <span class="n">is_core</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]:</span></pre>
 <pre class='cython code score-0 '>        __pyx_t_5 = __pyx_v_n_idx;
         __pyx_t_13 = (((*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides)) == -2L) != 0);
         if (__pyx_t_13) {
         } else {
           __pyx_t_6 = __pyx_t_13;
-          goto __pyx_L16_bool_binop_done;
+          goto __pyx_L15_bool_binop_done;
         }
         __pyx_t_5 = __pyx_v_n_idx;
         __pyx_t_13 = ((*__Pyx_BufPtrCContig1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_is_core.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_is_core.diminfo[0].strides)) != 0);
         __pyx_t_6 = __pyx_t_13;
-        __pyx_L16_bool_binop_done:;
+        __pyx_L15_bool_binop_done:;
         if (__pyx_t_6) {
 /* … */
         }
       }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">151</span>:                     <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">154</span>:                     <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
 <pre class='cython code score-0 '>          __pyx_t_5 = __pyx_v_idx;
           __pyx_t_14 = __pyx_v_n_idx;
           *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_labels.diminfo[0].strides) = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides));
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">152</span>:                     <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_idx</span><span class="p">)</span></pre>
-<pre class='cython code score-5 '>          __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_n_idx);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)</span>
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">155</span>:                     <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_idx</span><span class="p">)</span></pre>
+<pre class='cython code score-5 '>          __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_n_idx);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)</span>
           <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-          __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_stack, __pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 152, __pyx_L1_error)</span>
+          __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_stack, __pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 155, __pyx_L1_error)</span>
           <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
 </pre></div></body></html>
