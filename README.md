@@ -26,19 +26,22 @@ The image below shows you the result of EDBSCAN on a given input. The image on t
 
 ```python
 # Load in the data
-data = ...
+import numpy as np
+data = np.load(open('data.npy'))
 print(data.shape)  # (220, 2)
-y = ...
+y = np.load(open('y.npy'))
 print(y.shape)  # (220, )
-print(y)  # array([None, None, ..., -1, None, ..., 0, None, ..., 1, ...], dtype=object)
+print(y)  # array([None, None, …, -1, None, …, 0, None, …, 1, …], dtype=object)
 
 # Run the algorithm
 from edbscan import edbscan
 core_points, labels = edbscan(X=data, y=y)
-print(labels)  # array([-1, 2, 2, 4, -1, -1, 6, 3, 4, ...])
+print(labels)  # array([-1, 2, 2, 4, -1, -1, 6, 3, 4, …])
 ```
 
 As shown in the code snippet above, aside from the raw data (`data`), a target vector `y` is provided. This vector indicates the known (labeled) clusters. A `None` cluster label are those not yet known, that need to get clustered by the EDBSCAN algorithm.
+
+For more detailed usages, see the notebooks present in the `examples/` folder.
 
 
 ## How EDBSCAN works
@@ -60,34 +63,25 @@ This section compares EDBSCAN to (1) other clustering algorithms as DBSCAN and H
 
 This section compares the behaviour of the [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) algorithm, the [HDBSCAN](https://hdbscan.readthedocs.io/en/latest/index.html) and the [EDBSCAN](https://github.com/RubenPants/EDBSCAN) algorithm on the data shown in the *Usage* section. The input data looks as follows:
 
-![Input data](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/default_labels.png?raw=true)
+![Comparison between DBSCAN, HDBSCAN, and EDBSCAN](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/comparison.png?raw=true)
 
-#### DBSCAN
+In each of the clustered results, light-blue data represents the detected noise.
 
-The image below shows the clustered result after running the [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) algorithm. The light-blue data points are considered noise. Some observations on the result:
-* Green (1) combined two clusters that should be separated
-* Purple (3) combined two clusters that should be separated
-* Brown (4) identified noise as a cluster
+Some observations on the [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) result:
+* Green combined two clusters that should be separated
+* Purple combined two clusters that should be separated
+* Brown identified noise as a cluster
 
-![DBSCAN result](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/default_dbscan.png?raw=true)
+Some observations on the [HDBSCAN](https://hdbscan.readthedocs.io/en/latest/index.html)  result:
+* Yellow and Grey are now successfully separated
+* Brown and Pink are now successfully separated
+* Purple identified noise as a cluster
 
-#### HDBSCAN
-
-The image below shows the clustered result after running the [HDBSCAN](https://hdbscan.readthedocs.io/en/latest/index.html) algorithm. The light-blue data points are considered noise. Some observations on the result:
-* Green (1) and Pink (5) are now successfully separated
-* Grey (6) and Yellow (7) are now successfully separated
-* Purple (3) identified noise as a cluster
-
-![HDBSCAN result](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/default_hdbscan.png?raw=true)
-
-#### EDBSCAN
-
-The image below shows the clustered result after running the [EDBSCAN](https://github.com/RubenPants/EDBSCAN) algorithm. The light-blue data points are considered noise. Some observations on the result:
-* Orange (0) and Grey (6) are now successfully separated
-* Brown (4) and Pink (5) are now successfully separated
+Some observations on the [EDBSCAN](https://github.com/RubenPants/EDBSCAN) result:
+* Grey and Orange are now successfully separated
+* Brown and Pink are now successfully separated
 * The noise that was previously detected as a cluster is now successfully identified as noise
 
-![EDBSCAN result](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/default_edbscan.png?raw=true)
 
 ### 2. Scikit-learn cluster benchmark
 
