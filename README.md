@@ -22,7 +22,7 @@ pip install git+https://github.com/RubenPants/EDBSCAN.git
 
 The image below shows you the result of EDBSCAN on a given input. The image on the left shows you the raw input data, together with the few labeled samples. The image on the right shows the clusters found by EDBSCAN, where the light blue dots represent the detected noise.
 
-![Result of EDBSCAN](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/usage.png?raw=true)
+![Result of EDBSCAN](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/usage.png)
 
 ```python
 # Load in the data
@@ -63,7 +63,7 @@ This section compares EDBSCAN to (1) other clustering algorithms as DBSCAN and H
 
 This section compares the behaviour of the [DBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html) algorithm, the [HDBSCAN](https://hdbscan.readthedocs.io/en/latest/index.html) and the [EDBSCAN](https://github.com/RubenPants/EDBSCAN) algorithm on the data shown in the *Usage* section. The input data looks as follows:
 
-![Comparison between DBSCAN, HDBSCAN, and EDBSCAN](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/comparison.png?raw=true)
+![Comparison between DBSCAN, HDBSCAN, and EDBSCAN](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/comparison.png)
 
 In each of the clustered results, light-blue data represents the detected noise.
 
@@ -87,14 +87,14 @@ Some observations on the [EDBSCAN](https://github.com/RubenPants/EDBSCAN) result
 
 The following images show the results of the EDBSCAN algorithm on different [scikit-learn clustering benchmarks](https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html#sphx-glr-auto-examples-cluster-plot-cluster-comparison-py).
 
-![circles](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/circles.png?raw=true)
+![circles](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/circles.png)
 
-![moons](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/moons.png?raw=true)
+![moons](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/moons.png)
 
-![blobs](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/blobs.png?raw=true)
+![blobs](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/blobs.png)
 
-![aniso](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/aniso.png?raw=true)
+![aniso](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/aniso.png)
 
-![uniform](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/uniform.png?raw=true)
+![uniform](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/uniform.png)
 
-![multi](https://github.com/RubenPants/EDBSCAN/blob/master/examples/images/multi.png?raw=true)
+![multi](https://raw.githubusercontent.com/RubenPants/EDBSCAN/master/examples/images/multi.png)

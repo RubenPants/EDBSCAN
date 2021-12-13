@@ -47,5 +47,4 @@ if __name__ == "__main__":
         ext_modules=cythonize(ext, annotate=True),
         include_dirs=[np.get_include()],
         install_requires=install_requires,
-        # include_package_data=True,
     )
