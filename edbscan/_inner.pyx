@@ -85,8 +85,8 @@ cdef int get_max_0(
 
     for i in xrange(arr.shape[0]):
         idx = arr[i]
-        if i > max_val:
-            max_val = i
+        if (idx + 1) > max_val:
+            max_val = idx + 1
     return max_val
 
 cdef bool conflict(

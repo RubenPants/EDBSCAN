@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 
 def pop(
     stack: List[int],
-    neighborhoods: NDArray[NDArray[np.int8]],
+    neighborhoods: NDArray[np.int8],
 ) -> int:
     """Pop index from stack with the highest density, calculated as number of neighbors."""
     best_size, best_idx = -1, -1
@@ -25,7 +25,7 @@ def pop(
 
 def get_unlabeled(
     is_core: NDArray[np.int8],
-    neighborhoods: NDArray[NDArray[np.int8]],
+    neighborhoods: NDArray[np.int8],
     labels: NDArray[np.int8],
 ) -> int:
     """Get the best unlabeled core index."""
@@ -60,7 +60,7 @@ def conflict(
 
 def inner(
     is_core: NDArray[np.int8],
-    neighborhoods: NDArray[NDArray[np.int8]],
+    neighborhoods: NDArray[np.int8],
     labels: NDArray[np.int8],
 ) -> None:
     """Inner-loop of the EDBSCAN algorithm."""

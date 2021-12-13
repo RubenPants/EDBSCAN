@@ -721,7 +721,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <pre class='cython code score-12 '>static int __pyx_f_7edbscan_6_inner_get_max_0(PyArrayObject *__pyx_v_arr) {
   int __pyx_v_max_val;
   int __pyx_v_i;
-  CYTHON_UNUSED int __pyx_v_idx;
+  int __pyx_v_idx;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
   __Pyx_Buffer __pyx_pybuffer_arr;
   int __pyx_r;
@@ -769,14 +769,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">087</span>:         <span class="n">idx</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></pre>
 <pre class='cython code score-0 '>    __pyx_t_4 = __pyx_v_i;
     __pyx_v_idx = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_arr.rcbuffer-&gt;pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_arr.diminfo[0].strides));
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">088</span>:         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_val</span><span class="p">:</span></pre>
-<pre class='cython code score-0 '>    __pyx_t_5 = ((__pyx_v_i &gt; __pyx_v_max_val) != 0);
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">088</span>:         <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mf">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_val</span><span class="p">:</span></pre>
+<pre class='cython code score-0 '>    __pyx_t_5 = (((__pyx_v_idx + 1) &gt; __pyx_v_max_val) != 0);
     if (__pyx_t_5) {
 /* … */
     }
   }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">089</span>:             <span class="n">max_val</span> <span class="o">=</span> <span class="n">i</span></pre>
-<pre class='cython code score-0 '>      __pyx_v_max_val = __pyx_v_i;
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">089</span>:             <span class="n">max_val</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mf">1</span></pre>
+<pre class='cython code score-0 '>      __pyx_v_max_val = (__pyx_v_idx + 1);
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">090</span>:     <span class="k">return</span> <span class="n">max_val</span></pre>
 <pre class='cython code score-0 '>  __pyx_r = __pyx_v_max_val;
   goto __pyx_L0;

@@ -2427,7 +2427,7 @@ static bool __pyx_f_7edbscan_6_inner_value_in_array(int __pyx_v_val, std::vector
 static int __pyx_f_7edbscan_6_inner_get_max_0(PyArrayObject *__pyx_v_arr) {
   int __pyx_v_max_val;
   int __pyx_v_i;
-  CYTHON_UNUSED int __pyx_v_idx;
+  int __pyx_v_idx;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
   __Pyx_Buffer __pyx_pybuffer_arr;
   int __pyx_r;
@@ -2465,7 +2465,7 @@ static int __pyx_f_7edbscan_6_inner_get_max_0(PyArrayObject *__pyx_v_arr) {
  * 
  *     for i in xrange(arr.shape[0]):             # <<<<<<<<<<<<<<
  *         idx = arr[i]
- *         if i > max_val:
+ *         if (idx + 1) > max_val:
  */
   __pyx_t_1 = (__pyx_v_arr->dimensions[0]);
   __pyx_t_2 = __pyx_t_1;
@@ -2476,8 +2476,8 @@ static int __pyx_f_7edbscan_6_inner_get_max_0(PyArrayObject *__pyx_v_arr) {
  * 
  *     for i in xrange(arr.shape[0]):
  *         idx = arr[i]             # <<<<<<<<<<<<<<
- *         if i > max_val:
- *             max_val = i
+ *         if (idx + 1) > max_val:
+ *             max_val = idx + 1
  */
     __pyx_t_4 = __pyx_v_i;
     __pyx_v_idx = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_arr.diminfo[0].strides));
@@ -2485,35 +2485,35 @@ static int __pyx_f_7edbscan_6_inner_get_max_0(PyArrayObject *__pyx_v_arr) {
     /* "edbscan/_inner.pyx":88
  *     for i in xrange(arr.shape[0]):
  *         idx = arr[i]
- *         if i > max_val:             # <<<<<<<<<<<<<<
- *             max_val = i
+ *         if (idx + 1) > max_val:             # <<<<<<<<<<<<<<
+ *             max_val = idx + 1
  *     return max_val
  */
-    __pyx_t_5 = ((__pyx_v_i > __pyx_v_max_val) != 0);
+    __pyx_t_5 = (((__pyx_v_idx + 1) > __pyx_v_max_val) != 0);
     if (__pyx_t_5) {
 
       /* "edbscan/_inner.pyx":89
  *         idx = arr[i]
- *         if i > max_val:
- *             max_val = i             # <<<<<<<<<<<<<<
+ *         if (idx + 1) > max_val:
+ *             max_val = idx + 1             # <<<<<<<<<<<<<<
  *     return max_val
  * 
  */
-      __pyx_v_max_val = __pyx_v_i;
+      __pyx_v_max_val = (__pyx_v_idx + 1);
 
       /* "edbscan/_inner.pyx":88
  *     for i in xrange(arr.shape[0]):
  *         idx = arr[i]
- *         if i > max_val:             # <<<<<<<<<<<<<<
- *             max_val = i
+ *         if (idx + 1) > max_val:             # <<<<<<<<<<<<<<
+ *             max_val = idx + 1
  *     return max_val
  */
     }
   }
 
   /* "edbscan/_inner.pyx":90
- *         if i > max_val:
- *             max_val = i
+ *         if (idx + 1) > max_val:
+ *             max_val = idx + 1
  *     return max_val             # <<<<<<<<<<<<<<
  * 
  * cdef bool conflict(

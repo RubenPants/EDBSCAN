@@ -8,12 +8,13 @@ from __future__ import annotations
 
 import warnings
 from copy import deepcopy
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 from numpy.typing import NDArray
 from scipy import sparse
 from sklearn.base import BaseEstimator, ClusterMixin
+from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils.validation import _check_sample_weight
 
@@ -23,8 +24,8 @@ NoneType = type(None)
 
 
 def edbscan(
-    X: NDArray[NDArray[np.float64]],
-    y: Optional[NDArray[Optional[np.int8]]] = None,
+    X: NDArray[np.float64],
+    y: Optional[NDArray[np.int8]] = None,
     eps: float = 0.5,
     *,
     min_samples: int = 5,
@@ -285,14 +286,14 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
         self.n_jobs = n_jobs
 
         # Hidden variables
-        self.components_: Optional[NDArray[NDArray[np.float64]]] = None
+        self.components_: Optional[NDArray[np.float64]] = None
         self.core_sample_indices_: Optional[NDArray[np.int8]] = None
         self.labels_: Optional[NDArray[np.int8]] = None
 
     def fit(  # noqa: C901
         self,
-        X: NDArray[NDArray[np.float64]],
-        y: Optional[NDArray[Optional[np.int8]]] = None,
+        X: NDArray[np.float64],
+        y: Optional[NDArray[np.int8]] = None,
         sample_weight: Optional[NDArray[np.float64]] = None,
     ) -> EDBSCAN:
         """Perform DBSCAN clustering from features, or distance matrix.
@@ -425,13 +426,13 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
 
         # A list of all core samples found, which are those that stand a chance of being in a cluster.
         core_samples = np.asarray(n_neighbors >= self.min_samples, dtype=np.uint8)
-        inner(core_samples, neighborhoods, labels)  # type: ignore
+        inner(core_samples, neighborhoods, labels)
 
         # Remaining unlabeled labels are considered as noise (-1).
         labels[labels == self._UNLABELED] = -1
 
         self.core_sample_indices_ = np.where(core_samples)[0]
-        self.labels_ = labels  # type: ignore
+        self.labels_ = labels
 
         if len(self.core_sample_indices_):  # type: ignore
             # fix for scipy sparse indexing issue
@@ -443,8 +444,8 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
 
     def fit_predict(
         self,
-        X: NDArray[NDArray[np.float64]],
-        y: Optional[NDArray[Optional[np.int8]]] = None,
+        X: NDArray[np.float64],
+        y: Optional[NDArray[np.int8]] = None,
         sample_weight: Optional[NDArray[np.float64]] = None,
     ) -> NDArray[np.int8]:
         """Compute clusters from a data or distance matrix and predict labels.
@@ -477,7 +478,7 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
         assert labels is not None
         return labels
 
-    def get_components(self) -> NDArray[NDArray[np.float64]]:
+    def get_components(self) -> NDArray[np.float64]:
         """Get the components."""
         assert self.components_ is not None
         return self.components_
@@ -493,7 +494,7 @@ class EDBSCAN(ClusterMixin, BaseEstimator):
         return self.labels_
 
 
-def _evaluate_known_clusters(known: NDArray[Optional[np.int8]]) -> None:
+def _evaluate_known_clusters(known: NDArray[np.int8]) -> None:
     """Evaluate the known clusters and throw a suiting exception if necessary."""
     # Known has to be a 1-dimensional vector
     if len(known.shape) != 1:
@@ -506,3 +507,161 @@ def _evaluate_known_clusters(known: NDArray[Optional[np.int8]]) -> None:
     # All integers are of value -1 or greater
     if not all(v is None or v >= -1 for v in known):
         raise ValueError("All integer values need to be of value -1 or greater!")
+
+
+def analyse_edbscan(
+    X: NDArray[np.float64],
+    y: Optional[NDArray[np.int8]] = None,
+    eps: float = 0.5,
+    min_samples: int = 5,
+    metric: str = "euclidean",
+    metric_params: Optional[Dict[str, Any]] = None,
+    algorithm: str = "auto",
+    leaf_size: int = 30,
+    p: int = 2,
+    sample_weight: Optional[NDArray[np.float64]] = None,
+    n_jobs: Optional[int] = None,
+) -> Dict[str, Any]:
+    """
+    Analyse the EDBSCAN clustering result for the given EDBSCAN configuration.
+
+    Parameters
+    ----------
+    X : {array-like, sparse (CSR) matrix} of shape (n_samples, n_features) or \
+            (n_samples, n_samples)
+        A feature array, or array of distances between samples if
+        ``metric='precomputed'``.
+
+    y : {array-like} of shape (n_samples, )
+        Contains known clusters, which is optional.
+        Specified -1 clusters indicate noise.
+
+    eps : float, default=0.5
+        The maximum distance between two samples for one to be considered
+        as in the neighborhood of the other. This is not a maximum bound
+        on the distances of points within a cluster. This is the most
+        important EDBSCAN parameter to choose appropriately for your data set
+        and distance function.
+
+    min_samples : int, default=5
+        The number of samples (or total weight) in a neighborhood for a point
+        to be considered as a core point. This includes the point itself.
+
+    metric : str or callable, default='euclidean'
+        The metric to use when calculating distance between instances in a
+        feature array. If metric is a string or callable, it must be one of
+        the options allowed by :func:`sklearn.metrics.pairwise_distances` for
+        its metric parameter.
+        If metric is "precomputed", x is assumed to be a distance matrix and
+        must be square during fit.
+        x may be a :term:`sparse graph <sparse graph>`,
+        in which case only "nonzero" elements may be considered neighbors.
+
+    metric_params : dict, default=None
+        Additional keyword arguments for the metric function.
+
+        .. versionadded:: 0.19
+
+    algorithm : {'auto', 'ball_tree', 'kd_tree', 'brute'}, default='auto'
+        The algorithm to be used by the NearestNeighbors module
+        to compute pointwise distances and find nearest neighbors.
+        See NearestNeighbors module documentation for details.
+
+    leaf_size : int, default=30
+        Leaf size passed to BallTree or cKDTree. This can affect the speed
+        of the construction and query, as well as the memory required
+        to store the tree. The optimal value depends
+        on the nature of the problem.
+
+    p : float, default=2
+        The power of the Minkowski metric to be used to calculate distance
+        between points. If None, then ``p=2`` (equivalent to the Euclidean
+        distance).
+
+    sample_weight : array-like of shape (n_samples,), default=None
+        Weight of each sample, such that a sample with a weight of at least
+        ``min_samples`` is by itself a core sample; a sample with negative
+        weight may inhibit its eps-neighbor from being core.
+        Note that weights are absolute, and default to 1.
+
+    n_jobs : int, default=None
+        The number of parallel jobs to run for neighbors search. ``None`` means
+        1 unless in a :obj:`joblib.parallel_backend` context. ``-1`` means
+        using all processors. See :term:`Glossary <n_jobs>` for more details.
+        If precomputed distance are used, parallel execution is not available
+        and thus n_jobs will have no effect.
+
+    Returns  TODO: Update
+    -------
+    core_samples : ndarray of shape (n_core_samples,)
+        Indices of core samples.
+
+    labels : ndarray of shape (n_samples,)
+        Cluster labels for each point.  Noisy samples are given the label -1.
+    """
+    # Perform the scan
+    core_points, labels = edbscan(
+        X=X,
+        y=y,
+        eps=eps,
+        min_samples=min_samples,
+        metric=metric,
+        metric_params=metric_params,
+        algorithm=algorithm,
+        leaf_size=leaf_size,
+        p=p,
+        sample_weight=sample_weight,
+        n_jobs=n_jobs,
+    )
+
+    # Simple analysis of the result
+    noise_ratio = sum(labels == -1) / labels.shape[0]
+    core_point_ratio = core_points.shape[0] / labels.shape[0]
+    n_provided = {cluster for cluster in y if (cluster is not None) and (cluster != -1)}  # type: ignore
+    n_found = {cluster for cluster in labels if cluster != -1}
+    n_diff = n_found - n_provided
+    result: Dict[str, Any] = {
+        "noise_ratio": noise_ratio,
+        "core_point_ratio": core_point_ratio,
+        "number_of_clusters": {
+            "provided": n_provided,
+            "found": n_found,
+            "added": n_diff,
+        },
+    }
+
+    # Compute statistics on the number of reachable neighbours in the cluster
+    neighbors_model = NearestNeighbors(
+        radius=eps,
+        algorithm=algorithm,
+        leaf_size=leaf_size,
+        metric=metric,
+        metric_params=metric_params,
+        p=p,
+        n_jobs=n_jobs,
+    )
+    neighbors_model.fit(X)
+    nn_neighbours = neighbors_model.radius_neighbors(X, return_distance=False)
+    nn_collection: Dict[int, List[int]] = {}
+    for cluster, neighbours in zip(labels, nn_neighbours):
+        if cluster == -1:
+            continue
+        elif cluster not in nn_collection:
+            nn_collection[cluster] = []
+        nn_collection[cluster].append(len(neighbours) - 1)
+    result["cluster_nn"] = {}
+    for cluster, distances in nn_collection.items():
+        result["cluster_nn"][cluster] = (
+            min(distances),
+            sum(distances) / len(distances),
+            max(distances),
+        )
+
+    # Calculate the average euclidean distance between cluster points
+    result["cluster_dist"] = {}
+    for cluster in result["cluster_nn"].keys():
+        items = X[np.where(labels == cluster)]
+        dist = euclidean_distances(items)
+        dist = dist[np.where(dist > 0)]
+        result["cluster_dist"][cluster] = (dist.min(), np.average(dist), dist.max())  # type: ignore
+    return result
