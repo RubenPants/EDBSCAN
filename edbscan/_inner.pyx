@@ -150,6 +150,10 @@ cpdef void inner(
         if not conflict(neighborhood=neighborhood, labels=labels):
             for i in xrange(neighborhood.shape[0]):
                 n_idx = neighborhood[i]
-                if labels[n_idx] == -2 and is_core[n_idx]:
+                # Label if it's an unlabeled sample
+                if labels[n_idx] == -2:
                     labels[n_idx] = labels[idx]
-                    stack.append(n_idx)
+
+                    # Only possible to expand if it's a core point
+                    if is_core[n_idx]:
+                        stack.append(n_idx)

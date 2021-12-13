@@ -1295,29 +1295,29 @@ static PyObject *__pyx_pf_7edbscan_6_inner_inner(CYTHON_UNUSED PyObject *__pyx_s
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">152</span>:                 <span class="n">n_idx</span> <span class="o">=</span> <span class="n">neighborhood</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></pre>
 <pre class='cython code score-0 '>        __pyx_t_5 = __pyx_v_i;
         __pyx_v_n_idx = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_neighborhood.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhood.diminfo[0].strides));
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">153</span>:                 <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2</span> <span class="ow">and</span> <span class="n">is_core</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]:</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">153</span>:                 <span class="c"># Label if it&#39;s an unlabeled sample</span></pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">154</span>:                 <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2</span><span class="p">:</span></pre>
 <pre class='cython code score-0 '>        __pyx_t_5 = __pyx_v_n_idx;
-        __pyx_t_13 = (((*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides)) == -2L) != 0);
-        if (__pyx_t_13) {
-        } else {
-          __pyx_t_6 = __pyx_t_13;
-          goto __pyx_L15_bool_binop_done;
-        }
-        __pyx_t_5 = __pyx_v_n_idx;
-        __pyx_t_13 = ((*__Pyx_BufPtrCContig1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_is_core.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_is_core.diminfo[0].strides)) != 0);
-        __pyx_t_6 = __pyx_t_13;
-        __pyx_L15_bool_binop_done:;
+        __pyx_t_6 = (((*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides)) == -2L) != 0);
         if (__pyx_t_6) {
 /* … */
         }
       }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">154</span>:                     <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">155</span>:                     <span class="n">labels</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></pre>
 <pre class='cython code score-0 '>          __pyx_t_5 = __pyx_v_idx;
-          __pyx_t_14 = __pyx_v_n_idx;
-          *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_labels.diminfo[0].strides) = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides));
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">155</span>:                     <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_idx</span><span class="p">)</span></pre>
-<pre class='cython code score-5 '>          __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_n_idx);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)</span>
-          <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-          __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_stack, __pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 155, __pyx_L1_error)</span>
-          <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
+          __pyx_t_13 = __pyx_v_n_idx;
+          *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_labels.diminfo[0].strides) = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides));
+</pre><pre class="cython line score-0">&#xA0;<span class="">156</span>: </pre>
+<pre class="cython line score-0">&#xA0;<span class="">157</span>:                     <span class="c"># Only possible to expand if it&#39;s a core point</span></pre>
+<pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">158</span>:                     <span class="k">if</span> <span class="n">is_core</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]:</span></pre>
+<pre class='cython code score-0 '>          __pyx_t_5 = __pyx_v_n_idx;
+          __pyx_t_6 = ((*__Pyx_BufPtrCContig1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_is_core.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_is_core.diminfo[0].strides)) != 0);
+          if (__pyx_t_6) {
+/* … */
+          }
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">159</span>:                         <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_idx</span><span class="p">)</span></pre>
+<pre class='cython code score-5 '>            __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_n_idx);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)</span>
+            <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
+            __pyx_t_7 = <span class='pyx_c_api'>__Pyx_PyList_Append</span>(__pyx_v_stack, __pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 159, __pyx_L1_error)</span>
+            <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
 </pre></div></body></html>

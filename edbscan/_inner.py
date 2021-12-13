@@ -67,10 +67,7 @@ def inner(
     warning("RUNNING PYTHON LOOP, PLEASE USE C++ OPTIMISED LOOP INSTEAD")
 
     # Initialise the stack with all known clusters.
-    stack = []
-    for idx in range(labels.shape[0]):
-        if labels[idx] >= 0:
-            stack.append(idx)
+    stack = [idx for idx in range(labels.shape[0]) if labels >= 0]
 
     # Density-first search, where the density is defined by the number of neighbors a component has.
     # The algorithm expands the most dense core components first and ends at the non-core points.
@@ -97,6 +94,10 @@ def inner(
         idx = pop(stack=stack, neighborhoods=neighborhoods)
         if not conflict(neighborhood=neighborhoods[idx], labels=labels):
             for n_idx in neighborhoods[idx]:
-                if labels[n_idx] == -2 and is_core[n_idx]:
+                # Label if it's an unlabeled sample
+                if labels[n_idx] == -2:
                     labels[n_idx] = labels[idx]
-                    stack.append(n_idx)
+
+                    # Only possible to expand if it's a core point
+                    if is_core[n_idx]:
+                        stack.append(n_idx)

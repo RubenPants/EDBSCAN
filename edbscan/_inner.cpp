@@ -1695,9 +1695,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_Py_intptr_t(Py_intptr_t value);
 static CYTHON_INLINE Py_intptr_t __Pyx_PyInt_As_Py_intptr_t(PyObject *);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_npy_uint8(npy_uint8 value);
-
-/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
@@ -2833,8 +2830,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
   PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
   PyObject *__pyx_t_12 = NULL;
-  int __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
+  Py_ssize_t __pyx_t_13;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -3134,7 +3130,7 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
  *         if not conflict(neighborhood=neighborhood, labels=labels):
  *             for i in xrange(neighborhood.shape[0]):             # <<<<<<<<<<<<<<
  *                 n_idx = neighborhood[i]
- *                 if labels[n_idx] == -2 and is_core[n_idx]:
+ *                 # Label if it's an unlabeled sample
  */
       __pyx_t_2 = (__pyx_v_neighborhood->dimensions[0]);
       __pyx_t_3 = __pyx_t_2;
@@ -3145,58 +3141,68 @@ static void __pyx_f_7edbscan_6_inner_inner(PyArrayObject *__pyx_v_is_core, PyArr
  *         if not conflict(neighborhood=neighborhood, labels=labels):
  *             for i in xrange(neighborhood.shape[0]):
  *                 n_idx = neighborhood[i]             # <<<<<<<<<<<<<<
- *                 if labels[n_idx] == -2 and is_core[n_idx]:
- *                     labels[n_idx] = labels[idx]
+ *                 # Label if it's an unlabeled sample
+ *                 if labels[n_idx] == -2:
  */
         __pyx_t_5 = __pyx_v_i;
         __pyx_v_n_idx = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_neighborhood.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_neighborhood.diminfo[0].strides));
 
-        /* "edbscan/_inner.pyx":153
- *             for i in xrange(neighborhood.shape[0]):
+        /* "edbscan/_inner.pyx":154
  *                 n_idx = neighborhood[i]
- *                 if labels[n_idx] == -2 and is_core[n_idx]:             # <<<<<<<<<<<<<<
+ *                 # Label if it's an unlabeled sample
+ *                 if labels[n_idx] == -2:             # <<<<<<<<<<<<<<
  *                     labels[n_idx] = labels[idx]
- *                     stack.append(n_idx)
+ * 
  */
         __pyx_t_5 = __pyx_v_n_idx;
-        __pyx_t_13 = (((*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides)) == -2L) != 0);
-        if (__pyx_t_13) {
-        } else {
-          __pyx_t_6 = __pyx_t_13;
-          goto __pyx_L15_bool_binop_done;
-        }
-        __pyx_t_5 = __pyx_v_n_idx;
-        __pyx_t_13 = ((*__Pyx_BufPtrCContig1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_is_core.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_is_core.diminfo[0].strides)) != 0);
-        __pyx_t_6 = __pyx_t_13;
-        __pyx_L15_bool_binop_done:;
+        __pyx_t_6 = (((*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides)) == -2L) != 0);
         if (__pyx_t_6) {
+
+          /* "edbscan/_inner.pyx":155
+ *                 # Label if it's an unlabeled sample
+ *                 if labels[n_idx] == -2:
+ *                     labels[n_idx] = labels[idx]             # <<<<<<<<<<<<<<
+ * 
+ *                     # Only possible to expand if it's a core point
+ */
+          __pyx_t_5 = __pyx_v_idx;
+          __pyx_t_13 = __pyx_v_n_idx;
+          *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_labels.diminfo[0].strides) = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides));
+
+          /* "edbscan/_inner.pyx":158
+ * 
+ *                     # Only possible to expand if it's a core point
+ *                     if is_core[n_idx]:             # <<<<<<<<<<<<<<
+ *                         stack.append(n_idx)
+ */
+          __pyx_t_5 = __pyx_v_n_idx;
+          __pyx_t_6 = ((*__Pyx_BufPtrCContig1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_is_core.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_is_core.diminfo[0].strides)) != 0);
+          if (__pyx_t_6) {
+
+            /* "edbscan/_inner.pyx":159
+ *                     # Only possible to expand if it's a core point
+ *                     if is_core[n_idx]:
+ *                         stack.append(n_idx)             # <<<<<<<<<<<<<<
+ */
+            __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_n_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_1);
+            __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_stack, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 159, __pyx_L1_error)
+            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+            /* "edbscan/_inner.pyx":158
+ * 
+ *                     # Only possible to expand if it's a core point
+ *                     if is_core[n_idx]:             # <<<<<<<<<<<<<<
+ *                         stack.append(n_idx)
+ */
+          }
 
           /* "edbscan/_inner.pyx":154
  *                 n_idx = neighborhood[i]
- *                 if labels[n_idx] == -2 and is_core[n_idx]:
- *                     labels[n_idx] = labels[idx]             # <<<<<<<<<<<<<<
- *                     stack.append(n_idx)
- */
-          __pyx_t_5 = __pyx_v_idx;
-          __pyx_t_14 = __pyx_v_n_idx;
-          *__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_labels.diminfo[0].strides) = (*__Pyx_BufPtrCContig1d(npy_intp *, __pyx_pybuffernd_labels.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_labels.diminfo[0].strides));
-
-          /* "edbscan/_inner.pyx":155
- *                 if labels[n_idx] == -2 and is_core[n_idx]:
+ *                 # Label if it's an unlabeled sample
+ *                 if labels[n_idx] == -2:             # <<<<<<<<<<<<<<
  *                     labels[n_idx] = labels[idx]
- *                     stack.append(n_idx)             # <<<<<<<<<<<<<<
- */
-          __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_n_idx); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_stack, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-          /* "edbscan/_inner.pyx":153
- *             for i in xrange(neighborhood.shape[0]):
- *                 n_idx = neighborhood[i]
- *                 if labels[n_idx] == -2 and is_core[n_idx]:             # <<<<<<<<<<<<<<
- *                     labels[n_idx] = labels[idx]
- *                     stack.append(n_idx)
+ * 
  */
         }
       }
@@ -7466,44 +7472,6 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to Py_intptr_t");
     return (Py_intptr_t) -1;
-}
-
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyInt_From_npy_uint8(npy_uint8 value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const npy_uint8 neg_one = (npy_uint8) -1, const_zero = (npy_uint8) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(npy_uint8) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(npy_uint8) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(npy_uint8) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(npy_uint8) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(npy_uint8) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(npy_uint8),
-                                     little, !is_unsigned);
-    }
 }
 
 /* CIntToPy */

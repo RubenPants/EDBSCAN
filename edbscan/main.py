@@ -591,13 +591,17 @@ def analyse_edbscan(
         If precomputed distance are used, parallel execution is not available
         and thus n_jobs will have no effect.
 
-    Returns  TODO: Update
+    Returns
     -------
-    core_samples : ndarray of shape (n_core_samples,)
-        Indices of core samples.
-
-    labels : ndarray of shape (n_samples,)
-        Cluster labels for each point.  Noisy samples are given the label -1.
+    result : dictionary
+        noise_ratio: Ratio of noisy samples in the final result
+        core_point_ratio: Ratio of core points (points with sufficient near neighbours) in the final result
+        number_of_clusters: Numbers about the clusters
+            provided: Set of provided clusters
+            found: Set of found clusters
+            added: Set of newly added clusters
+        cluster_nn: Number of nearest neighbours for each cluster (min,avg,max)
+        cluster_dist: Distance metrics (Euclidean) between points within one cluster (min,avg,max)
     """
     # Perform the scan
     core_points, labels = edbscan(
