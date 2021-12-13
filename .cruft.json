@@ -5,7 +5,7 @@
         "cookiecutter": {
             "project_name": "EDBSCAN",
             "project_description": "Enforced Density -Based Spatial Clustering of Applications with Noise.",
-            "package_version": "0.0.0",
+            "package_version": "0.0.1",
             "package_slug": "edbscan",
             "package_slug_kebab": "edbscan",
             "conda_env_dev": "edbscan-env",

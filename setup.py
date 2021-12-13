@@ -1,12 +1,16 @@
-"""Setup module for this Python package."""
+"""
+Setup module for this Python package.
 
+Tutorial to publish to PyPI: https://levelup.gitconnected.com/how-to-deploy-a-cython-package-to-pypi-8217a6581f09
+"""
+
+from setuptools import find_packages, setup
 import os
 import re
 from distutils.core import Extension
 
 import numpy as np
 from Cython.Build import cythonize
-from setuptools import find_packages, setup
 
 # Fill `install_requires` with packages in environment.run.yml.
 install_requires = []
@@ -36,7 +40,7 @@ if __name__ == "__main__":
     # Run the setup
     setup(
         name="edbscan",
-        version="0.0.0",
+        version="0.0.1",
         package_dir={"": "src"},
         packages=find_packages(where="src"),
         author="Ruben Broekx",
