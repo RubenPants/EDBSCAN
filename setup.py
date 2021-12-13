@@ -2,7 +2,10 @@
 
 import os
 import re
+from distutils.core import Extension
 
+import numpy as np
+from Cython.Build import cythonize
 from setuptools import find_packages, setup
 
 # Fill `install_requires` with packages in environment.run.yml.
@@ -19,12 +22,30 @@ with open(os.path.join(os.path.dirname(__file__), "environment.run.yml")) as spe
             )
             install_requires.append(prefix + match.group("n") + match.group("v"))
 
-setup(
-    name="edbscan",
-    version="0.0.0",
-    description="Enforced Density -Based Spatial Clustering of Applications with Noise.",
-    package_dir={"": "src"},
-    packages=find_packages(where="src"),
-    install_requires=install_requires,
-    include_package_data=True,
-)
+with open("README.md", "r") as f:
+    long_description = f.read()
+
+if __name__ == "__main__":
+    # Specify the Cython extension
+    ext = Extension(
+        "_inner",
+        sources=["edbscan/_inner.pyx"],
+        language="c++",
+    )
+
+    # Run the setup
+    setup(
+        name="edbscan",
+        version="0.0.0",
+        # package_dir={"": "edbscan"},
+        packages=find_packages(where="edbscan"),
+        author="Ruben Broekx",
+        description="Enforced Density -Based Spatial Clustering of Applications with Noise.",
+        long_description=long_description,
+        long_description_content_type="text/markdown",
+        url="https://github.com/RubenPants/EDBSCAN",
+        ext_modules=cythonize(ext, annotate=True),
+        include_dirs=[np.get_include()],
+        install_requires=install_requires,
+        # include_package_data=True,
+    )

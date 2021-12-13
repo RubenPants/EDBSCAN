@@ -18,16 +18,6 @@ def lint(c):
 
 
 @task
-def test(c):
-    """Test this package."""
-    logger.info("Running Pytest...")
-    c.run(
-        "env PYTHONPATH=src pytest --cov=src --cov-report term-missing --cov-report html:coverage/ tests",
-        pty=True,
-    )  # PYTHONPATH=src is needed for CI
-
-
-@task
 def lab(c):
     """Run Jupyter Lab."""
     notebooks_path = os.path.join(REPO_PATH, "examples")
