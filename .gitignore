@@ -86,3 +86,7 @@ site/
 *.c
 *.cpp
 *.so
+
+# Keep example results
+!examples/data/*.npy
+!examples/images/*.png

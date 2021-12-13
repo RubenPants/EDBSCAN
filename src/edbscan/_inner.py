@@ -67,7 +67,7 @@ def inner(
     warning("RUNNING PYTHON LOOP, PLEASE USE C++ OPTIMISED LOOP INSTEAD")
 
     # Initialise the stack with all known clusters.
-    stack = [idx for idx in range(labels.shape[0]) if labels >= 0]
+    stack = [idx for idx in range(labels.shape[0]) if labels[idx] >= 0]
 
     # Density-first search, where the density is defined by the number of neighbors a component has.
     # The algorithm expands the most dense core components first and ends at the non-core points.

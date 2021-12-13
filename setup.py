@@ -28,8 +28,8 @@ with open("README.md", "r") as f:
 if __name__ == "__main__":
     # Specify the Cython extension
     ext = Extension(
-        "_inner",
-        sources=["edbscan/_inner.pyx"],
+        "edbscan._inner",
+        sources=["src/edbscan/_inner.pyx"],
         language="c++",
     )
 
@@ -37,8 +37,8 @@ if __name__ == "__main__":
     setup(
         name="edbscan",
         version="0.0.0",
-        # package_dir={"": "edbscan"},
-        packages=find_packages(where="edbscan"),
+        package_dir={"": "src"},
+        packages=find_packages(where="src"),
         author="Ruben Broekx",
         description="Enforced Density -Based Spatial Clustering of Applications with Noise.",
         long_description=long_description,
