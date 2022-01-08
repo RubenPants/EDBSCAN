@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # Run the setup
     setup(
         name="edbscan",
-        version="0.0.1",
+        version="0.0.2",
         package_dir={"": "src"},
         packages=find_packages(where="src"),
         author="Ruben Broekx",

@@ -600,8 +600,8 @@ def analyse_edbscan(
             provided: Set of provided clusters
             found: Set of found clusters
             added: Set of newly added clusters
-        cluster_nn: Number of nearest neighbours for each cluster (min,avg,max)
-        cluster_dist: Distance metrics (Euclidean) between points within one cluster (min,avg,max)
+        inter_cluster_nn: Number of nearest neighbours for each cluster (min,avg,max)
+        inter_cluster_dist: Distance metrics (Euclidean) between points within one cluster (min,avg,max)
     """
     # Perform the scan
     core_points, labels = edbscan(
@@ -624,7 +624,40 @@ def analyse_edbscan(
     n_provided = {cluster for cluster in y if (cluster is not None) and (cluster != -1)}  # type: ignore
     n_found = {cluster for cluster in labels if cluster != -1}
     n_diff = n_found - n_provided
-    result: Dict[str, Any] = {
+
+    # Analyse the cluster neighbourhoods
+    inter_cluster_nn = _analyse_neighbourhood(
+        X=X,
+        labels=labels,
+        eps=eps,
+        metric=metric,
+        metric_params=metric_params,
+        algorithm=algorithm,
+        leaf_size=leaf_size,
+        p=p,
+        n_jobs=n_jobs,
+    )
+
+    # Analyse the distances between clusters
+    inter_cluster_dist = _analyse_inter_distance(
+        X=X,
+        labels=labels,
+    )
+
+    # Analyse the distances between clusters
+    intra_cluster_dist = _analyse_intra_distance(
+        X=X,
+        labels=labels,
+    )
+
+    # Analyse the distances between clusters
+    intra_target_dist = _analyse_intra_target_distance(
+        X=X,
+        y=y,
+    )
+
+    # Collect all the results and return
+    return {
         "noise_ratio": noise_ratio,
         "core_point_ratio": core_point_ratio,
         "number_of_clusters": {
@@ -632,8 +665,25 @@ def analyse_edbscan(
             "found": n_found,
             "added": n_diff,
         },
+        "inter_cluster_nn": inter_cluster_nn,
+        "inter_cluster_dist": inter_cluster_dist,
+        "intra_cluster_dist": intra_cluster_dist,
+        "intra_target_dist": intra_target_dist,
     }
 
+
+def _analyse_neighbourhood(
+    X: NDArray[np.float64],
+    labels: NDArray[np.int8],
+    eps: float = 0.5,
+    metric: str = "euclidean",
+    metric_params: Optional[Dict[str, Any]] = None,
+    algorithm: str = "auto",
+    leaf_size: int = 30,
+    p: int = 2,
+    n_jobs: Optional[int] = None,
+) -> Dict[int, Tuple[int, float, int]]:
+    """Analyse the neighbourhood properties from the different clusters."""
     # Compute statistics on the number of reachable neighbours in the cluster
     neighbors_model = NearestNeighbors(
         radius=eps,
@@ -653,19 +703,58 @@ def analyse_edbscan(
         elif cluster not in nn_collection:
             nn_collection[cluster] = []
         nn_collection[cluster].append(len(neighbours) - 1)
-    result["cluster_nn"] = {}
+    cluster_nn = {}
     for cluster, distances in nn_collection.items():
-        result["cluster_nn"][cluster] = (
+        cluster_nn[cluster] = (
             min(distances),
             sum(distances) / len(distances),
             max(distances),
         )
+    return cluster_nn
 
-    # Calculate the average euclidean distance between cluster points
-    result["cluster_dist"] = {}
-    for cluster in result["cluster_nn"].keys():
+
+def _analyse_inter_distance(
+    X: NDArray[np.float64],
+    labels: NDArray[np.int8],
+) -> Dict[int, Tuple[float, float, float]]:
+    """Analyse the distances within each of the clusters."""
+    cluster_dist = {}
+    for cluster in set(labels):
         items = X[np.where(labels == cluster)]
         dist = euclidean_distances(items)
         dist = dist[np.where(dist > 0)]
-        result["cluster_dist"][cluster] = (dist.min(), np.average(dist), dist.max())  # type: ignore
-    return result
+        cluster_dist[cluster] = (dist.min(), np.average(dist), dist.max())  # type: ignore
+    return cluster_dist
+
+
+def _analyse_intra_distance(
+    X: NDArray[np.float64],
+    labels: NDArray[np.int8],
+) -> Dict[int, Tuple[float, float, float]]:
+    """Analyse the distances between the different clusters (labels)."""
+    cluster_dist = {}
+    for cluster in set(labels):
+        cluster_items = X[np.where(labels == cluster)]
+        other_items = X[np.where(labels != cluster)]
+        dist = euclidean_distances(cluster_items, other_items)
+        cluster_dist[cluster] = (dist.min(), np.average(dist), dist.max())  # type: ignore
+    return cluster_dist
+
+
+def _analyse_intra_target_distance(
+    X: NDArray[np.float64],
+    y: Optional[NDArray[np.int8]],
+) -> Dict[int, Tuple[float, float, float]]:
+    """Analyse the distances between the different targets."""
+    # Return empty if no targets provided
+    if not y:
+        return {}
+
+    # Calculate the intra target distance
+    target_dist = {}
+    for cluster in set(y) - {None}:
+        cluster_items = X[np.where(y == cluster)]
+        other_items = X[np.where((y != cluster) & (y != None))]  # noqa: E711
+        dist = euclidean_distances(cluster_items, other_items)
+        target_dist[cluster] = (dist.min(), np.average(dist), dist.max())  # type: ignore
+    return target_dist
