@@ -602,6 +602,8 @@ def analyse_edbscan(
             added: Set of newly added clusters
         inter_cluster_nn: Number of nearest neighbours for each cluster (min,avg,max)
         inter_cluster_dist: Distance metrics (Euclidean) between points within one cluster (min,avg,max)
+        intra_cluster_dist: Distance metrics (Euclidean) between points of different clusters (min,avg,max)
+        intra_target_dist: Distance metrics (Euclidean) between different target clusters (min,avg,max)
     """
     # Perform the scan
     core_points, labels = edbscan(
